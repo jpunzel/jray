@@ -1,0 +1,6 @@
+[submodule "lib/third-party/googletest"]
+	path = lib/third-party/googletest
+	url = https://github.com/google/googletest
+[submodule "lib/third-party/yaml-cpp"]
+	path = lib/third-party/yaml-cpp
+	url = https://github.com/jbeder/yaml-cpp

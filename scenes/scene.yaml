@@ -1,0 +1,214 @@
+# vim: set expandtab:
+
+- add: camera
+  width: 1280
+  height: 720
+  field-of-view: 1.57
+  from: [ 0, 2.3, -4.8 ]
+  to: [ 0, 1, 0 ]
+  up: [ 0, 1, 0 ]
+  # Add a slight focal blur
+  #focal-length: 5
+  #aperture: 0.018
+  #focal-samples: 4
+  #supersampling: 8
+
+
+# Two lights, one roughly lined up with the sun in the sky sphere image,
+# and one behind just to add a touch more realism.
+
+- add: light
+  at: [ -8, 25, 30 ]
+  uvec: [ 5, 0, 0 ]
+  vvec: [ 0, 5, 0 ]
+  usteps: 2
+  vsteps: 2
+  jitter: true
+  intensity: [1.0, 1.0, 1.0]
+
+- add: light
+  at: [ 10, 15, -25 ]
+#  uvec: [ 15, 0, 0 ]
+#  vvec: [ 0, 15, 0 ]
+#  usteps: 8
+#  vsteps: 8
+#  jitter: true
+  intensity: [0.1, 0.1, 0.1]
+
+# Table
+# Wood texture courtesy of https://www.behance.net/Radetzki_Vladimir
+- add: cube
+  transform:
+    - [ scale, 4.5, 0.1, 2 ]
+    - [ rotate-x, -0.0314 ]
+  material:
+    specular: 0.8
+    reflective: 0.15
+    pattern:
+      type: map
+      mapping: planar
+      uv_pattern:
+        type: image
+        file: wood1.jpg
+
+- define: table-leg
+  value:
+    add: cylinder
+    closed: true
+    min: 0
+    max: 1
+    transform:
+      - [ scale, 0.08, 3, 0.08 ]
+    material:
+      color: [0.5, 0.5, 0.5]
+      ambient: 0.4
+      diffuse: 0.5
+      specular: 0.8
+      shininess: 300
+      reflective: 0.5
+
+
+- define: dragon
+  value:
+    add: obj
+    file: dragon.obj
+    transform:
+      - [ scale, 0.5, 0.5, 0.5 ]
+    material:
+      color: [ 0.3, 0.7, 0.4 ]
+      ambient: 0.2
+      diffuse: 0.3
+      specular: 0.8
+      shininess: 300
+      reflective: 0.8
+      transparency: 0.0
+      refractive-index: 1.0
+
+- define: mirror-material
+  value:
+    color: [ 0.9, 0.9, 1 ]
+    ambient: 0.1
+    diffuse: 0.6
+    specular: 0.6
+    shininess: 200
+    reflective: 0.8
+
+- define: red-mirror-material
+  extend: mirror-material
+  value:
+    color: [ 1, 0, 0 ]
+- define: green-mirror-material
+  extend: mirror-material
+  value:
+    color: [ 0, 1, 0 ]
+- define: blue-mirror-material
+  extend: mirror-material
+  value:
+    color: [ 0, 0, 1 ]
+- define: yellow-mirror-material
+  extend: mirror-material
+  value:
+    color: [ 1, 1, 0 ]
+
+
+
+- define: mirrordome
+  value:
+    add: csg
+    material: mirror-material
+    operation: difference
+    left:
+      type: sphere
+    right:
+      type: cube
+      transform:
+        - [ translate, 0, -1, 0 ]
+
+- define: marble
+  value:
+    add: sphere
+    transform:
+      - [ scale, 0.1, 0.1, 0.1 ]
+
+- add: table-leg
+  transform:
+    - [ translate, -3, -3, 0 ]
+- add: table-leg
+  transform:
+    - [ translate, 3, -3, 0 ]
+- add: table-leg
+  transform:
+    - [ translate, -3.5, -3, -1.90 ]
+- add: table-leg
+  transform:
+    - [ translate, 3.5, -3, -1.90 ]
+
+
+# Car
+# https://free3d.com/3d-model/bmw850-12027.html
+- add: obj
+  file: BMW850.obj
+  transform:
+    - [ scale, 0.02, 0.02, 0.02 ]
+    - [ translate, 2, 0.1, 3 ]
+    - [ rotate-y, 0.314 ]
+  material:
+    color: [1, 0.5, 0.3]
+    ambient: 0.2
+    diffuse: 0.3
+    specular: 0.8
+    shininess: 300
+    reflective: 0.6
+
+# Environment sphere
+# https://hdrihaven.com/hdri/?c=outdoor&h=reinforced_concrete_01
+- add: sphere
+  transform:
+    - [ scale, 1000, 1000, 1000 ]
+  material:
+    pattern:
+      transform:
+        - [ rotate-y, -0.35 ]
+        - [ rotate-x, 0.1 ]
+      type: map
+      mapping: spherical
+      uv_pattern:
+        type: image
+        file: reinforced_concrete.jpg
+    diffuse: 0
+    specular: 0
+    ambient: 1
+
+- add: mirrordome
+
+- add: marble
+  material: blue-mirror-material
+  transform:
+    - [ translate, 1.8, 0.16, -0.8 ]
+- add: marble
+  material: red-mirror-material
+  transform:
+    - [ translate, 2, 0.15, -1.1 ]
+- add: marble
+  material: green-mirror-material
+  transform:
+    - [ translate, 2.3, 0.15, -1.2 ]
+- add: marble
+  material: yellow-mirror-material
+  transform:
+    - [ translate, 1.8, 0.15, -1.3 ]
+
+- add: dragon
+  transform:
+    - [ scale, 0.7, 0.7, 0.7 ]
+    - [ translate, -2.5, 0.1, 0.8 ]
+    - [ rotate-y, -0.314 ]
+
+# Add a mirror just for fun
+- add: cube
+  material: mirror-material
+  transform:
+    - [ scale, 2, 4, 0.1 ]
+    - [ rotate-y, 0.7 ]
+    - [ translate, 5, 0, 4 ]
+
