@@ -18,6 +18,28 @@ Some of its features:
 
 While performance was not a major priority in this implementation, it does do pretty well at higher compiler optimization levels. Further improvements are planned.
 
+# How to build
+1. Obtain dependencies
+You'll need CMake and the gtkmm libraries. This depends on your distribution.  
+On Debian/Ubuntu:
+`sudo apt install libgtkmm-3.0-dev cmake`
+2. Clone the repo and pull the submodules  
+```
+git clone https://github.com/jpunzel/jray.git
+cd jray
+git submodule update --init --recursive
+```
+3. Create the build directory and run cmake
+```
+# (in jray dir)
+mkdir build
+cd build
+cmake ..
+```
+4. Compile!
+```
+make -j4
+```
 
 TODO:
 - [ ] Implement MTL parsing for texturing triangle meshes
