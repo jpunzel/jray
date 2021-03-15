@@ -1,5 +1,7 @@
 # jray - A Raytracer.
 
+[![A capture of jray in action](jray.gif "A capture of jray in action")](./scenes/scene.png)
+
 An implementation of *The Ray Tracer Challenge* by Jamis Buck, written in C++11 with a simple GTK3 UI.
 A "from scratch" implementation, it uses no special graphics or math libraries. Its only dependencies are GTK3, gtkmm, yaml-cpp and googletest.
 
