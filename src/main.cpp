@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 {
 	size_t threads = std::thread::hardware_concurrency();
     std::string scenefile;
-    std::string cwd;
+    std::string cwd = "";
     std::string output_imgfile = "";
     int c;
     static struct option long_options[] = {
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         }
     }
 
-    if ( chdir(cwd.c_str()) != 0 ) {
+    if ( !cwd.empty() && (chdir(cwd.c_str()) != 0) ) {
         perror("Cannot chdir");
         exit(EXIT_FAILURE);
     }
